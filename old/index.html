@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product App [Template]</title>
+    
+    <link href="https://iili.io/7XRuaV.png" rel="icon" type="image/png" />                                                            <!-- adding  the favicon image -->
+    <link rel="stylesheet" type="text/css" href="style.css">                                                                          <!-- added from website -->
+
+</head>
+
+<body>
+    <div class="nav-bar"></div>
+
+        <div id="app">
+            <div class="product">
+                <div class="product-image">                         <!--* both of the product-type are defined in css stylesheet-->
+                    <img :src="image" alt="">                       <!--* v-bind directive before src in order to have a bond between the data and the attribute -->
+                </div>
+                <div class="product-info">
+                    <h1>{{title}}</h1> 
+                    <p v-if="inStock">In Stock</p>                                                                                                 <!--v-if with boolean value-->
+                    <!-- <p v-if="inventory > 10">In Stock</p>                                                                                     <!-- v-if and v-else-if in case we use inventory integer value -->
+                    <!-- <p v-else-if="inventory <= 10 && inventory > 0">Almost out of stock!</p> -->
+                    <p v-else>Out of Stock</p>
+
+                    <ul>
+                        <li v-for="detail in details">{{detail}}</li>                                                                               <!-- v-for in order to show every detail in out array-->
+                    </ul>
+
+                    <div v-for="(variant,index) in variants" :key="variant.variantId" class="color-box" 
+                        :style="{backgroundColor: variant.variantColor}" @mouseover="updateProduct(index)">                          <!-- variant.cariantColor can be added to a style, updateProduct(variant.variantImage) is a method -->
+                    </div>
+
+                    <button v-on:click="addToCart" :disabled="!inStock" :class="{ disabledButton: !inStock }">Add to Cart</button>                  <!-- v-on on the click event can also be written as @ before the event -->
+                    <div class="cart">                                                                                                              <!-- also i can disable the tag by linking the stock boolean even in the style of the button -->
+                        <p>Cart ({{cart}})</p>
+                    </div>
+
+                </div>                                    
+            </div>
+        </div>
+</body>
+      
+      <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>                                                       <!-- CDN Vue Framework-->
+      <script type="text/javascript" src="main.js"></script> 
+
+</html>
