@@ -6,18 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product App [Template]</title>
     
-    <link href="https://iili.io/7XRuaV.png" rel="icon" type="image/png" />                                                            <!-- adding  the favicon image -->
-    <link rel="stylesheet" type="text/css" href="style.css">                                                                          <!-- added from website -->
-
+    <link href="https://iili.io/7XRuaV.png" rel="icon" type="image/png" />                     <!-- adding  the favicon image -->
+    <link rel="stylesheet" type="text/css" href="style.css">                                   <!-- the CSS file is from vuemaster website -->
 </head>
 
 <body>
-    <div class="nav-bar"></div>
-        <div id="app">
-            <div class="cart">                                                                                                              <!-- also i can disable the tag by linking the stock boolean even in the style of the button -->
-                <p>Cart ({{cart.length}})</p>
+    <div class="nav-bar"></div>                                              <!-- the navbar is from vuemaster website -->
+        <div id="app">                                                       <!--* import the VueJS app in the div -->
+            <div class="cart">                                               <!--* class "cart" is for the style -->
+                <p>Cart ({{cart.length}})</p>                                <!--* display the number of element of an array -->
             </div>
-            <product :premium="premium" @add-to-cart="updateCart"></product>
+            <product :premium="premium" @add-to-cart="updateCart"></product>        <!-- ! the component "product" has a props and an event "add-to-car" and the method is "updateCart" -->
         </div>
 </body>
       

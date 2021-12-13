@@ -1,50 +1,50 @@
-var eventBus= new Vue()
+var eventBus= new Vue()                     //* global event listener which is used as "eventBus.$on('custom-event',() => {})"
 
-Vue.component('product',{
+Vue.component('product',{                       //* delcaration of a new Vue.component named "product"
     props: {
-        premium:{
+        premium:{                               //* declaration of a 'props' named "premium" which is a Boolean type and is required
             type: Boolean,
             required: true
         }
     },
-    template: `                                         <!-- altgr+96 -->
-    <div class="product">
-        <div class="product-image">                         <!--* both of the product-type are defined in css stylesheet-->
-            <img :src="image" alt="">                       <!--* v-bind directive before src in order to have a bond between the data and the attribute -->
-        </div>
-        <div class="product-info">
-            <h1>{{title}}</h1> 
-            <p v-if="inStock">In Stock</p>                                                                                                 <!--v-if with boolean value-->
-            <!-- <p v-if="inventory > 10">In Stock</p>                                                                                     <!-- v-if and v-else-if in case we use inventory integer value -->
-            <!-- <p v-else-if="inventory <= 10 && inventory > 0">Almost out of stock!</p> -->
-            <p v-else>Out of Stock</p>
-            <p>User is Premium: {{ premium }}</p>
-            <p>Shipping: {{ shipping }}</p>
+    template: `                      <!-- starting the Template of the component which include a lot of html that will be displayed -->
+        <div class="product">
+            <div class="product-image">                         <!-- class is for CSS style -->
+                <img :src="image" alt="">                       <!--* v-bind directive before src in order to have a bond between the data and the attribute -->
+            </div>
+            <div class="product-info">                          <!-- class is for CSS style -->
+                <h1>{{title}}</h1> 
+                <p v-if="inStock">In Stock</p>                                                          <!--v-if with boolean value-->
+                <!-- <p v-if="inventory > 10">In Stock</p>                                              <!--v-if with numeric value-->
+                <!-- <p v-else-if="inventory <= 10 && inventory > 0">Almost out of stock!</p> -->
+                <p v-else>Out of Stock</p>
+                <p>User is Premium: {{ premium }}</p>                   <!-- check if user is premium with props -->
+                <p>Shipping: {{ shipping }}</p>                         <!-- computed to check if shipment is free or not -->
 
-            <ul>
-                <li v-for="detail in details">{{detail}}</li>                                                                               <!-- v-for in order to show every detail in out array-->
-            </ul>
+                <ul>
+                    <li v-for="detail in details">{{detail}}</li>                                                                <!-- v-for in order to show every detail in out array-->
+                </ul>
 
-            <div v-for="(variant,index) in variants" :key="variant.variantId" class="color-box" 
-                :style="{backgroundColor: variant.variantColor}" @mouseover="updateProduct(index)">                          <!-- variant.cariantColor can be added to a style, updateProduct(variant.variantImage) is a method -->
+                <div v-for="(variant,index) in variants" :key="variant.variantId" class="color-box" 
+                    :style="{backgroundColor: variant.variantColor}" @mouseover="updateProduct(index)">                          <!-- variant.variantColor can be added to a style, updateProduct(index) is a method -->
+                </div>
+
+                <button @click="addToCart" :disabled="!inStock" :class="{ disabledButton: !inStock }">Add to Cart</button>       <!-- method "addToCart", disabled if inStock is false even in style -->
             </div>
 
-            <button v-on:click="addToCart" :disabled="!inStock" :class="{ disabledButton: !inStock }">Add to Cart</button>                  <!-- v-on on the click event can also be written as @ before the event -->
-        </div>
+            <product-tabs :reviews="reviews"></product-tabs>                                                                     <!-- new component "product-tabs" with v-bind on "reviews" method which is required -->
 
-        <product-tabs :reviews="reviews"></product-tabs>
+        </div>`,
 
-    </div>
-    `,
-    data() {
+    data() {                                                //! data section of the component
         return {
-            brand: 'Vue Mastery',
+            brand: 'Vue Mastery',                           
             product: 'Socks',
             //image: 'img/vmSocks-green-onWhite.jpg',           due to refactor as computed
             selectedVariant: 0,
             //inStock: true,                                    removed for refector and make it as a computed
             //inventory: 100
-            details:['80% cotton','20% polyester','Gender-neutral'],
+            details:['80% cotton','20% polyester','Gender-neutral'],                    //*array declaration
             variants: [
                 {
                     variantId: '2234',
@@ -61,20 +61,20 @@ Vue.component('product',{
             ],
             reviews: []
         }
-    } ,        
+    },
     methods: {
         addToCart(){
-            //this.cart++                     //this .cart is no longer on our component
-            this.$emit('add-to-cart',this.variants[this.selectedVariant].variantId)
-        },
-        updateProduct(index){            //using variantImage as method and index as computed
-            this.selectedVariant=index      //instead update this.image i can update this.selectedVariant      
+            //this.cart++                                                                       //this .cart is no longer on our component
+            this.$emit('add-to-cart',this.variants[this.selectedVariant].variantId)             //* emitter of the 'add-to-cart' event with selected id of our product
+        },                                                                                      //* that is used in our HTML page along a call to "updateCart" method but the ID parameter was passed directly into the event emitter
+        updateProduct(index){
+            this.selectedVariant=index                                                          //* update the selectedVariant in order to have the selected product highlighted
         }
         // addReview(productReview){
         //     this.reviews.push(productReview)             not using this anymore because of eventBus
         // }
     },
-    computed : {
+    computed : {                                                                                //* computed property will only re-evaluate when some of its reactive dependencies have changed
         title(){
             return this.brand + ' ' + this.product
         },
@@ -92,8 +92,8 @@ Vue.component('product',{
             }
         }
     },
-    mounted(){                               //lifecicle hook
-        eventBus.$on('review-submitted', productReview =>{
+    mounted(){                                                                                 //* lifecicle hook
+        eventBus.$on('review-submitted', productReview =>{                                     //* event emitter 
             this.reviews.push(productReview)
         })
     }
@@ -136,8 +136,7 @@ Vue.component('product-review',{
             <p>
                 <input type="submit" value="Submit">  
             </p>
-          </form>
-    `,
+        </form>`,
     data(){
         return {
             name: null,
@@ -194,8 +193,7 @@ Vue.component('product-tabs',{
 
         <product-review v-show="selectedTab === 'Make a Review'"></product-review>
 
-        </div>
-    `,
+        </div>`,
     data() {
         return {
             tabs:['Reviews', 'Make a Review'],
@@ -208,7 +206,7 @@ var app = new Vue({
     el: '#app',
     data: {
         premium: true,
-        cart: []                                            // array initialization              
+        cart: []
     },
     methods: {
         updateCart(id){
