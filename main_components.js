@@ -44,8 +44,8 @@ Vue.component('product',{                       //* delcaration of a new Vue.com
             selectedVariant: 0,
             //inStock: true,                                    removed for refector and make it as a computed
             //inventory: 100
-            details:['80% cotton','20% polyester','Gender-neutral'],                    //*array declaration
-            variants: [
+            details:['80% cotton','20% polyester','Gender-neutral'],                    //* array declaration
+            variants: [                                                                 //* structured type of element
                 {
                     variantId: '2234',
                     variantColor: 'green',
@@ -59,10 +59,10 @@ Vue.component('product',{                       //* delcaration of a new Vue.com
                     variantQuantity: 0
                 }
             ],
-            reviews: []
+            reviews: []                                                                 //* reviews's array
         }
     },
-    methods: {
+    methods: {                                              //! method section of the component
         addToCart(){
             //this.cart++                                                                       //this .cart is no longer on our component
             this.$emit('add-to-cart',this.variants[this.selectedVariant].variantId)             //* emitter of the 'add-to-cart' event with selected id of our product
@@ -93,13 +93,13 @@ Vue.component('product',{                       //* delcaration of a new Vue.com
         }
     },
     mounted(){                                                                                 //* lifecicle hook
-        eventBus.$on('review-submitted', productReview =>{                                     //* event emitter 
-            this.reviews.push(productReview)
+        eventBus.$on('review-submitted', productReview =>{                                     //* event listener which is currently listening to 'review-submitted' event with a callback parameter
+            this.reviews.push(productReview)                                                   //* adding the review to the reviews's array
         })
     }
 })
 
-Vue.component('product-review',{
+Vue.component('product-review',{                                                               //* new component called product-review
     template:`
         <form class="review-form" @submit.prevent="onSubmit">
 
