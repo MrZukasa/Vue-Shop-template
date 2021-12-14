@@ -101,12 +101,12 @@ Vue.component('product',{                       //* delcaration of a new Vue.com
 
 Vue.component('product-review',{                                                               //* new component called product-review
     template:`
-        <form class="review-form" @submit.prevent="onSubmit">
+        <form class="review-form" @submit.prevent="onSubmit">                                  //* 'v-on' submit event with prevent parameter that avoid page to reload also call the method onSubmit
 
-            <p v-if="errors.length">
+            <p v-if="errors.length">                                                           //* if there is an error, show error <p>
                 <b>Please check the errors: </b>
                 <ul>
-                    <li v-for="error in errors">
+                    <li v-for="error in errors">                                               //* cycle for print error
                         {{error}}
                     </li>
                 </ul>
@@ -114,11 +114,11 @@ Vue.component('product-review',{                                                
 
             <p>
                 <label for="name">Name:</label>
-                <input id="name" v-model="name" placeholder="Your Name Here">
+                <input id="name" v-model="name" placeholder="Your Name Here">                   //* v-model used to take input
             </p>
-    
+ 
             <p>
-                <label for="review">Review:</label>      
+                <label for="review">Review:</label>
                 <textarea id="review" v-model="review" placeholder="Your Review Here"></textarea>
             </p>
     
@@ -134,7 +134,7 @@ Vue.component('product-review',{                                                
             </p>
         
             <p>
-                <input type="submit" value="Submit">  
+                <input type="submit" value="Submit">
             </p>
         </form>`,
     data(){
@@ -148,17 +148,17 @@ Vue.component('product-review',{                                                
     methods: {
         onSubmit() {
             if (this.name && this.review && this.rating){
-                let productReview = {
+                let productReview = {                                                           //* populate an object that contain every field that we need
                     name: this.name,
                     review: this.review,
                     rating: this.rating
                 }
-                eventBus.$emit('review-submitted', productReview)
-                this.name = null
+                eventBus.$emit('review-submitted', productReview)                               //* emit the 'review-submitted' event with the "productReview" object as parameter
+                this.name = null                                                                //* initialize the fields after usage
                 this.review = null
                 this.rating = null
             } else {
-                if (!this.name) this.errors.push('Insert your Name, please.')
+                if (!this.name) this.errors.push('Insert your Name, please.')                   //* if the field are empty then push the correct error
                 if (!this.rating) this.errors.push('Insert your Rating, please.')
                 if (!this.review) this.errors.push('Insert your Review, please.')
             }
@@ -167,8 +167,8 @@ Vue.component('product-review',{                                                
 })
 
 Vue.component('product-tabs',{
-    props: {                                //attribute that you can register to a component
-        reviews: {
+    props: {                                                                                    //* attribute that you can register to a component
+        reviews: {                                                                              //* make an array of reviews
             type: Array,
             required: true
         }
@@ -176,7 +176,7 @@ Vue.component('product-tabs',{
     template: `
         <div>
             <span class="tab" :class="{ activeTab: selectedTab === tab }" v-for="(tab,index) in tabs" :key="index" @click="selectedTab=tab">
-            {{tab}}
+                {{tab}}
             </span>
             
         <div v-show="selectedTab === 'Reviews'">
@@ -191,13 +191,13 @@ Vue.component('product-tabs',{
             </ul>
         </div>
 
-        <product-review v-show="selectedTab === 'Make a Review'"></product-review>
+        <product-review v-show="selectedTab === 'Make a Review'"></product-review>              //* other component 
 
         </div>`,
     data() {
         return {
-            tabs:['Reviews', 'Make a Review'],
-            selectedTab: 'Reviews'
+            tabs:['Reviews', 'Make a Review'],                                                  //* creating a tab array which contains the two tab label
+            selectedTab: 'Reviews'                                                              //* the selectedTab is a string
         }
     }
 })
