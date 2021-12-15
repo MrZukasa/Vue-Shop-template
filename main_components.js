@@ -183,7 +183,7 @@ Vue.component('product-tabs',{
             <h2>Reviews</h2>
             <p v-if="!reviews.length">There are no reviews yet for this product.</p>
             <ul>
-                <li v-for="review in reviews">
+                <li v-for="review in reviews">                                                  //* v-for that allow to see all the reviews
                     <p>{{ review.name }}</p>
                     <p>Rating: {{ review.rating }}</p>
                     <p>{{ review.review }}</p>
@@ -202,14 +202,14 @@ Vue.component('product-tabs',{
     }
 })
 
-var app = new Vue({
+var app = new Vue({                                                                             //* main app which contain the premium feature and the cart
     el: '#app',
     data: {
         premium: true,
         cart: []
     },
     methods: {
-        updateCart(id){
+        updateCart(id){                                                                         //* this method allow to push the id into the cart
             this.cart.push(id)
         }
     }
